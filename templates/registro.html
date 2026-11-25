@@ -1,0 +1,9 @@
+{% extends 'base.html' %}{% load ui %}{% block content %}
+<div class="titulo centro"><h1>Crear cuenta</h1><p>Registra tu tienda y comienza a usar CuentaFácil.</p></div>
+<form method="post">{% csrf_token %}
+{% if form.non_field_errors %}<div class="err caja">{{ form.non_field_errors.0 }}</div>{% endif %}
+{% for f in form %}{% if f.name == 'telefono' %}<details><summary>Más datos (opcional)</summary>{% endif %}
+<div class="campo"><div class="inp con"><svg class="ic"><use href="#i-{{ f.name|icono }}"/></svg>{{ f }}</div>{% for e in f.errors %}<div class="err">{{ e }}</div>{% endfor %}</div>
+{% if f.name == 'direccion' %}</details>{% endif %}{% endfor %}
+<button class="btn full">Registrarme</button></form>
+<p class="centro muted" style="margin-top:14px">¿Ya tienes cuenta? <a class="enlace" href="{% url 'login' %}">Inicia sesión</a></p>{% endblock %}

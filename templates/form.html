@@ -1,0 +1,10 @@
+{% extends 'base.html' %}{% load ui %}{% block izq %}{% include 'atras.html' with url=volver %}{% endblock %}
+{% block content %}<div class="titulo"><h1>{{ titulo }}</h1>{% if subtitulo %}<p>{{ subtitulo }}</p>{% endif %}</div>
+{% if aviso %}<div class="aviso">ℹ️ {{ aviso }}</div>{% endif %}
+{% if form %}<form method="post" class="card">{% csrf_token %}
+{% if form.non_field_errors %}<div class="err caja">{{ form.non_field_errors.0 }}</div>{% endif %}
+{% for f in form %}{% if f.is_hidden %}{{ f }}{% else %}<div class="campo"><label for="{{ f.id_for_label }}">{{ f.label }}</label>
+{% with ic=f.name|icono %}<div class="inp{% if ic %} con{% endif %}">{% if ic %}<svg class="ic"><use href="#i-{{ ic }}"/></svg>{% endif %}{{ f }}</div>{% endwith %}
+{% for e in f.errors %}<div class="err">{{ e }}</div>{% endfor %}</div>{% endif %}{% endfor %}
+<button class="btn full">{{ boton }}</button></form>
+{% else %}<div class="card">El enlace no es válido o ya fue usado. <a href="{% url 'recuperar' %}">Solicitar uno nuevo</a></div>{% endif %}{% endblock %}

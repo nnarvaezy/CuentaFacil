@@ -1,0 +1,13 @@
+{% extends 'base.html' %}{% block izq %}{% url 'inicio' as u %}{% include 'atras.html' with url=u %}{% endblock %}
+{% block content %}<div class="titulo"><h1>Ventas del día</h1><p>Registra el resumen de ventas y cierra tu día.</p></div>
+<form method="get" class="campo"><label>Fecha</label><div class="inp con"><svg class="ic"><use href="#i-cal"/></svg><input type="date" name="fecha" value="{{ fecha|date:'Y-m-d' }}" max="{{ hoy|date:'Y-m-d' }}" onchange="this.form.submit()"></div></form>
+{% if cierre.cerrado %}<div class="msg">🔒 Día cerrado el {{ cierre.cerrado_en|date:"d/m/Y H:i" }}.</div>{% endif %}
+<form method="post">{% csrf_token %}<input type="hidden" name="fecha" value="{{ fecha|date:'Y-m-d' }}">
+<div class="campo"><label>Ventas en efectivo</label><div class="inp con"><svg class="ic"><use href="#i-dollar"/></svg>{% if cierre.cerrado %}<input value="{{ cierre.ventas_efectivo }}" readonly>{% else %}{{ form.ventas_efectivo }}{% endif %}</div>{% for e in form.ventas_efectivo.errors %}<div class="err">{{ e }}</div>{% endfor %}</div>
+<div class="campo"><label>Ventas por transferencia</label><div class="inp con"><svg class="ic"><use href="#i-repeat"/></svg><input value="{{ transferencias_venta }}" readonly></div></div>
+<div class="card suave fila" style="justify-content:flex-start;gap:14px"><svg class="ic" style="width:34px;height:34px;color:var(--verde)"><use href="#i-cart"/></svg><div><small>Total de ventas</small><b style="display:block;font:700 30px Poppins">${{ ventas }}</b></div></div>
+<p style="margin:0 0 12px">Gastos del día: <b class="v-rojo">${{ gastos }}</b> · Ventas − gastos: <b>${{ saldo_operativo }}</b><br><small>No es ganancia neta.{% if transferencias_abono > 0 %} Abonos por transferencia (${{ transferencias_abono }}) no se suman a ventas.{% endif %}</small></p>
+{% if cierre.cerrado %}<button class="btn sec full" name="accion" value="reabrir">Reabrir día para corregir</button>
+{% else %}<button class="btn full" name="accion" value="cerrar" onclick="return confirm('¿Cerrar el día {{ fecha|date:'d/m/Y' }}? Después no se podrán editar sus registros.')">Cerrar día</button>
+<button class="btn sec full" style="margin-top:10px" name="accion" value="guardar">Guardar ventas sin cerrar</button>{% endif %}</form>
+{% if ultimo %}<div class="card suave fila" style="justify-content:flex-start;gap:12px;margin-top:14px"><svg class="ic" style="color:var(--verde)"><use href="#i-cal"/></svg><div><b>Último cierre:</b><br><small>{{ ultimo.fecha|date:"d/m/Y" }} - ${{ ultimo.total_ventas }}</small></div></div>{% endif %}{% endblock %}

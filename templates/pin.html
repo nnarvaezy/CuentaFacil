@@ -1,0 +1,21 @@
+{% extends 'base.html' %}{% load ui %}{% block izq %}{% endblock %}{% block der %}{% endblock %}{% block menu %}{% endblock %}{% block nav %}{% endblock %}
+{% block content %}<div class="centro">
+<div class="escudo"><svg class="ic"><use href="#i-shield"/></svg></div><h1 style="margin:4px 0;font-size:24px">{{ titulo }}</h1>
+{% if config %}<p class="muted">Usa 5 números para entrar rápido cuando la sesión se bloquee por inactividad.</p>
+<form method="post" style="text-align:left;margin-top:16px">{% csrf_token %}
+{% for f in form %}<div class="campo"><label>{{ f.label }}</label><div class="inp con"><svg class="ic"><use href="#i-lock"/></svg>{{ f }}</div>{% for e in f.errors %}<div class="err">{{ e }}</div>{% endfor %}</div>{% endfor %}
+<button class="btn full">Guardar PIN</button></form><p><a class="enlace" href="{% url 'inicio' %}">Omitir por ahora</a></p>
+{% else %}<p class="muted">Usa tu PIN de 5 dígitos para acceder rápidamente.</p>
+<div class="err" style="min-height:20px">{% for e in form.pin.errors %}{{ e }} {% endfor %}{% for e in form.non_field_errors %}{{ e }} {% endfor %}</div>
+<form method="post" id="pinf">{% csrf_token %}<input type="hidden" name="pin" id="pinv">
+<div class="puntos" id="puntos"><i></i><i></i><i></i><i></i><i></i></div>
+<div class="teclado">{% for n in '123456789' %}<button type="button" data-n="{{ n }}">{{ n }}</button>{% endfor %}<button type="button" class="vacio" tabindex="-1"></button><button type="button" data-n="0">0</button><button type="button" class="borrar" id="borrar" aria-label="Borrar"><svg class="ic"><use href="#i-del"/></svg></button></div></form>
+<form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="enlace">Ingresar con contraseña</button></form>
+<script>
+var d='',pts=document.querySelectorAll('#puntos i');
+function pinta(){pts.forEach(function(p,i){p.classList.toggle('on',i<d.length)})}
+function mete(n){if(d.length>=5)return;d+=n;pinta();if(d.length===5){document.getElementById('pinv').value=d;document.getElementById('pinf').submit()}}
+document.querySelectorAll('.teclado [data-n]').forEach(function(b){b.onclick=function(){mete(b.dataset.n)}});
+document.getElementById('borrar').onclick=function(){d=d.slice(0,-1);pinta()};
+document.onkeydown=function(e){if(/^\d$/.test(e.key))mete(e.key);else if(e.key==='Backspace'){d=d.slice(0,-1);pinta()}};
+</script>{% endif %}</div>{% endblock %}

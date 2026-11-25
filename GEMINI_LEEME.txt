@@ -1,0 +1,15 @@
+CUENTAFÁCIL — INTEGRACIÓN GEMINI
+1. Crea una clave en https://aistudio.google.com/apikey (verifica disponibilidad y condiciones).
+2. En PowerShell, dentro de la carpeta del proyecto y con el entorno virtual activo:
+   python -m pip install -r requirements.txt
+   $env:GEMINI_API_KEY = "TU_CLAVE_REAL"
+   $env:GEMINI_MODEL = "gemini-2.5-flash"
+   python manage.py migrate
+   python manage.py check
+   python manage.py test
+   python manage.py runserver
+3. Abre http://127.0.0.1:8000/ y entra a Reportes. Pulsa Generar análisis con IA.
+4. En el asistente escribe: Analiza las ventas de esta semana; Cómo me fue esta semana; o solicita una promoción con cantidad, precio y vencimiento.
+5. Si Gemini no responde, revisa la clave, cuota y modelo disponible en tu cuenta. Puedes cambiar GEMINI_MODEL. No compartas tu clave ni la subas a Git. Las variables de PowerShell duran esa sesión.
+La IA recibe estadísticas agregadas y datos numéricos de promociones; no recibe mensajes originales ni nombres de clientes. Las categorías son las predefinidas del sistema. La IA no registra operaciones. El asistente original sigue usando reglas para consultas y registros; Gemini añade análisis y consejos, no interpretación general de todos los comandos.
+Esta versión conserva la configuración local original; no publicar en Internet sin endurecer seguridad. No incluye cambios de esquema. Si tienes una base existente, respáldala antes de copiar los archivos modificados (core/gemini.py, core/views.py, core/asistente.py, templates/reportes.html).

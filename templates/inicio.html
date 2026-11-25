@@ -1,0 +1,12 @@
+{% extends 'base.html' %}{% load ui %}{% block content %}
+<div class="fila" style="margin:4px 0 12px"><div><h1 style="margin:0;font-size:22px">¡Hola, {{ user.first_name|primer_nombre }}! 👋</h1><small>{{ tienda.nombre }}</small></div>
+<span class="circ" style="border-radius:12px"><svg class="ic"><use href="#i-store"/></svg></span></div>
+<a class="hero" href="{% url 'ventas_dia' %}"><div><small>Ventas de hoy</small><b>${{ ventas }}</b></div><div class="barritas"><i style="height:30%"></i><i style="height:45%"></i><i style="height:40%"></i><i style="height:75%"></i><i style="height:100%"></i></div></a>
+<div class="kpis">
+<a class="kpi" href="{% url 'movimientos' %}"><span class="t"><svg class="ic"><use href="#i-repeat"/></svg>Transferencias</span><b class="v-osc">${{ transferencias }}</b></a>
+<a class="kpi" href="{% url 'movimientos' %}?t=gastos"><span class="t"><svg class="ic"><use href="#i-card"/></svg>Gastos</span><b class="v-rojo">${{ gastos }}</b></a>
+<a class="kpi" href="{% url 'deudas' %}"><span class="t"><svg class="ic"><use href="#i-file"/></svg>Fiados</span><b class="v-osc">${{ deuda }}</b></a>
+<a class="kpi" href="{% url 'deudas' %}"><span class="t"><svg class="ic"><use href="#i-dollar"/></svg>Abonos</span><b class="v-verde">${{ abonos }}</b></a></div>
+<a class="asist" href="{% url 'asistente' %}"><span class="bot">🤖</span><div style="flex:1"><b>Asistente inteligente</b><small>Consulta, registra o analiza tu negocio con voz o texto.</small></div><svg class="ic"><use href="#i-chev"/></svg></a>
+<div class="chips" style="flex-wrap:wrap"><a href="{% url 'nuevo' 'fiado' %}">+ Fiado</a><a href="{% url 'nuevo' 'abono' %}">+ Abono</a><a href="{% url 'nuevo' 'gasto' %}">+ Gasto</a><a href="{% url 'nuevo' 'transferencia' %}">+ Transferencia</a><a href="{% url 'nuevo' 'cliente' %}">+ Cliente</a></div>
+<p class="centro muted" style="font-size:13px">Ventas − gastos de hoy: <b>${{ saldo_operativo }}</b> · no es ganancia neta</p>{% endblock %}

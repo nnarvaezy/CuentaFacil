@@ -1,0 +1,9 @@
+{% extends 'base.html' %}{% load ui %}{% block izq %}{% url 'clientes' as u %}{% include 'atras.html' with url=u %}{% endblock %}
+{% block content %}<div class="card fila"><div class="fila" style="justify-content:flex-start"><span class="circ" style="width:52px;height:52px;font-size:18px">{{ c.nombre|iniciales }}</span>
+<div><h2 style="margin:0;font-size:19px">{{ c.nombre }}</h2><small>{{ c.telefono }} {{ c.referencia }}</small></div></div>
+<div style="text-align:right"><small>Saldo</small><br><span class="pm {% if c.saldo <= 0 %}ok{% endif %}">${{ c.saldo }}</span></div></div>
+<h3 style="margin:16px 0 8px">Historial de fiados</h3>
+{% for f in fiados %}<div class="card"><div class="fila"><b>${{ f.monto }} · {{ f.fecha|date:"d/m/Y" }}</b><span class="tag {% if f.vencido %}mal{% endif %}">{% if f.vencido %}Vencido{% else %}{{ f.estado }}{% endif %}</span></div>
+<small>{% if f.vencimiento %}Vence {{ f.vencimiento|date:"d/m/Y" }}{% endif %}{% if f.vencimiento and f.descripcion %} · {% endif %}{{ f.descripcion }}</small>
+{% for a in f.abonos.all %}<p class="v-verde" style="margin:6px 0 0">↳ Abono ${{ a.monto }} · {{ a.metodo }} · {{ a.fecha|date:"d/m/Y" }}</p>{% endfor %}
+<p style="margin:8px 0 0">Pendiente: <b>${{ f.saldo }}</b></p></div>{% empty %}<p class="muted centro">Sin fiados registrados.</p>{% endfor %}{% endblock %}

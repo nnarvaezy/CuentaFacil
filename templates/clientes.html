@@ -1,0 +1,11 @@
+{% extends 'base.html' %}{% load ui %}{% block content %}
+<div class="titulo"><h1>Clientes y fiados</h1><p>Administra tus clientes, registra fiados y abonos.</p></div>
+<form method="get" class="fila" style="gap:10px;margin-bottom:12px"><input type="hidden" name="f" value="{{ f }}">
+<div class="inp con" style="flex:1"><svg class="ic"><use href="#i-search"/></svg><input name="q" value="{{ q }}" placeholder="Buscar cliente..."></div>
+<a class="btn chico" href="{% url 'nuevo' 'cliente' %}"><svg class="ic" style="width:18px;height:18px"><use href="#i-userplus"/></svg>Agregar</a></form>
+<div class="chips"><a class="{% if f == 'todos' %}on{% endif %}" href="?f=todos&q={{ q|urlencode }}">Todos ({{ n_todos }})</a><a class="{% if f == 'con' %}on{% endif %}" href="?f=con&q={{ q|urlencode }}">Con fiado ({{ n_con }})</a><a class="{% if f == 'sin' %}on{% endif %}" href="?f=sin&q={{ q|urlencode }}">Sin deuda ({{ n_sin }})</a></div>
+<div class="card" style="padding:4px 14px">{% for x in filas %}<a class="item" href="{% url 'cliente_detalle' x.c.pk %}"><span class="circ">{{ x.c.nombre|iniciales }}</span>
+<div class="tx"><b>{{ x.c.nombre }}</b><small>{% if x.c.telefono %}📞 {{ x.c.telefono }}{% else %}Sin teléfono{% endif %}</small></div>
+<span class="pm {% if x.saldo <= 0 %}ok{% endif %}">${{ x.saldo }}</span><svg class="ic" style="color:var(--gris)"><use href="#i-chev"/></svg></a>
+{% empty %}<p class="muted centro">No hay clientes para mostrar.</p>{% endfor %}</div>
+<div class="dobles"><a href="{% url 'nuevo' 'fiado' %}"><svg class="ic"><use href="#i-file"/></svg>Registrar fiado</a><a href="{% url 'nuevo' 'abono' %}"><svg class="ic"><use href="#i-dollar"/></svg>Registrar abono</a></div>{% endblock %}

@@ -1,0 +1,338 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    .resultado-ia {
+        background: #F4FAF6;
+        border: 1px solid #DCEBE2;
+        border-radius: 14px;
+        padding: 15px;
+        margin-top: 16px;
+        font-size: 14px;
+        line-height: 1.6;
+        color: #16372C;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+    }
+
+    .resultado-ia strong {
+        color: #07583F;
+        font-weight: 700;
+    }
+
+    .encabezado-ia {
+        color: #07583F;
+        font-weight: 700;
+        font-size: 15px;
+    }
+
+    .pie-ia {
+        font-size: 11px;
+        color: #6B7C74;
+        margin-top: 12px;
+        padding-top: 10px;
+        border-top: 1px solid #DCEBE2;
+    }
+
+    .error-ia {
+        background: #FFF8DC;
+        border-radius: 10px;
+        padding: 12px;
+        margin-top: 12px;
+        font-size: 13px;
+    }
+
+    #btn-analizar:disabled {
+        opacity: 0.7;
+        cursor: wait;
+    }
+</style>
+
+<div class="titulo">
+    <h1>Reportes</h1>
+    <p>Analiza el comportamiento de tu negocio.</p>
+</div>
+
+<div class="seg">
+    <a href="?p=dia"
+       class="{% if p == 'dia' %}on{% endif %}">
+        Día
+    </a>
+
+    <a href="?p=semana"
+       class="{% if p == 'semana' %}on{% endif %}">
+        Semana
+    </a>
+
+    <a href="?p=mes"
+       class="{% if p == 'mes' %}on{% endif %}">
+        Mes
+    </a>
+</div>
+
+<p class="muted" style="margin:0 0 8px;font-size:13px">
+    Del {{ desde|date:"d/m/Y" }}
+    al {{ hasta|date:"d/m/Y" }}
+</p>
+
+<!-- Gráfico de ventas -->
+
+<div class="card">
+
+    <b>Ventas por día</b>
+
+    <div class="barras">
+        {% for d in dias %}
+        <div class="barra">
+            <i style="height:{{ d.alto }}%"></i>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% if dias|length <= 7 %}
+    <div class="etiq">
+        {% for d in dias %}
+        <div class="barra">
+            {{ d.fecha|date:"d/m" }}<br>
+            <b>${{ d.ventas|floatformat:0 }}</b>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+</div>
+
+<!-- Resumen económico -->
+
+<div class="card" style="padding:4px 14px">
+
+    <div class="item">
+        <span class="circ">
+            <svg class="ic">
+                <use href="#i-cart"/>
+            </svg>
+        </span>
+
+        <div class="tx">
+            <b>Ventas totales</b>
+        </div>
+
+        <span class="monto v-verde">
+            ${{ ventas }}
+        </span>
+    </div>
+
+    <div class="item">
+        <span class="circ rojo">
+            <svg class="ic">
+                <use href="#i-card"/>
+            </svg>
+        </span>
+
+        <div class="tx">
+            <b>Gastos totales</b>
+        </div>
+
+        <span class="monto v-rojo">
+            ${{ gastos }}
+        </span>
+    </div>
+
+    <div class="item">
+        <span class="circ">
+            <svg class="ic">
+                <use href="#i-repeat"/>
+            </svg>
+        </span>
+
+        <div class="tx">
+            <b>Transferencias</b>
+        </div>
+
+        <span class="monto v-osc">
+            ${{ transferencias }}
+        </span>
+    </div>
+
+    <div class="item">
+        <span class="circ rojo">
+            <svg class="ic">
+                <use href="#i-users"/>
+            </svg>
+        </span>
+
+        <div class="tx">
+            <b>Fiados pendientes</b>
+            <small>al día de hoy</small>
+        </div>
+
+        <span class="monto v-rojo">
+            ${{ deuda }}
+        </span>
+    </div>
+
+</div>
+
+<p class="muted" style="font-size:12px">
+    Ventas − gastos: <b>${{ saldo_operativo }}</b>.
+    No es ganancia neta: no se conocen los costos
+    de los productos. Ventas = efectivo +
+    transferencias de ventas; los abonos de
+    fiados no cuentan como ventas.
+</p>
+
+<!-- Gastos por categoría -->
+
+{% if categorias %}
+
+<div class="card">
+
+    <b>Gastos por categoría</b>
+
+    {% for c in categorias %}
+
+    <div class="fila" style="margin-top:8px">
+        <span>{{ c.nombre }}</span>
+
+        <b class="v-rojo">
+            ${{ c.total }}
+        </b>
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endif %}
+
+<div class="aviso">
+    ℹ️ Las transferencias se registran manualmente:
+    CuentaFácil no las verifica con el banco.
+</div>
+
+<!-- Análisis inteligente -->
+
+<div class="card">
+
+    <div class="encabezado-ia">
+        ✨ Análisis inteligente con Gemini
+    </div>
+
+    <p class="muted">
+        Obtén recomendaciones a partir de los
+        registros de tu negocio.
+    </p>
+
+    <form method="post" id="form-analisis">
+
+        {% csrf_token %}
+
+        <input type="hidden" name="p" value="{{ p }}">
+
+        <input type="hidden" name="accion" value="analizar">
+
+        <button class="btn full"
+                type="submit"
+                id="btn-analizar">
+
+            Generar análisis con IA
+
+        </button>
+
+    </form>
+
+    {% if analisis_ia %}
+
+    <div class="resultado-ia" id="resultado-ia">{{ analisis_ia }}</div>
+
+    <div class="pie-ia">
+        ✨ Análisis generado con Gemini.
+        Las recomendaciones son orientativas.
+    </div>
+
+    {% endif %}
+
+    {% if ia_error %}
+
+    <div class="error-ia">
+        ⚠️ Gemini no está disponible en este momento.
+        Intenta nuevamente más tarde.
+        Tus reportes siguen funcionando.
+    </div>
+
+    {% endif %}
+
+</div>
+
+<script>
+    (function () {
+
+        // Formato seguro de los títulos de Gemini
+
+        const resultado = document.getElementById('resultado-ia');
+
+        if (resultado) {
+
+            const texto = resultado.textContent;
+
+            const partes = texto.split(/\*\*(.*?)\*\*/gs);
+
+            resultado.textContent = '';
+
+            partes.forEach(function (parte, indice) {
+
+                if (indice % 2 === 1) {
+
+                    const negrita = document.createElement('strong');
+
+                    negrita.textContent = parte;
+
+                    resultado.appendChild(negrita);
+
+                } else {
+
+                    resultado.appendChild(
+                        document.createTextNode(parte)
+                    );
+
+                }
+
+            });
+
+        }
+
+        // Indicador durante el análisis de Gemini
+
+        const formulario = document.getElementById('form-analisis');
+        const boton = document.getElementById('btn-analizar');
+
+        formulario.addEventListener('submit', function (e) {
+
+            if (boton.disabled) {
+                e.preventDefault();
+                return;
+            }
+
+            boton.disabled = true;
+            boton.textContent = 'Analizando...';
+
+            if (typeof mostrarCarga === 'function') {
+
+                mostrarCarga('Analizando tu negocio...');
+
+            }
+
+        });
+
+        window.addEventListener('pageshow', function () {
+
+            boton.disabled = false;
+            boton.textContent = 'Generar análisis con IA';
+
+        });
+
+    })();
+</script>
+
+{% endblock %}

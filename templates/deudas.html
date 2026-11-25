@@ -1,0 +1,7 @@
+{% extends 'base.html' %}{% block izq %}{% url 'clientes' as u %}{% include 'atras.html' with url=u %}{% endblock %}
+{% block content %}<div class="titulo"><h1>Fiados</h1><p>Deudas de tus clientes, las pendientes primero.</p></div>
+<div class="dobles" style="position:static;padding:0 0 12px;background:none"><a href="{% url 'nuevo' 'fiado' %}"><svg class="ic"><use href="#i-file"/></svg>Registrar fiado</a><a href="{% url 'nuevo' 'abono' %}"><svg class="ic"><use href="#i-dollar"/></svg>Registrar abono</a></div>
+{% for f in fiados %}<div class="card"><div class="fila"><b>{{ f.cliente.nombre }}</b><span class="tag {% if f.vencido %}mal{% endif %}">{% if f.vencido %}Vencido{% else %}{{ f.estado }}{% endif %}</span></div>
+<p style="margin:8px 0">Original: ${{ f.monto }} · Pendiente: <b class="{% if f.saldo > 0 %}v-rojo{% else %}v-verde{% endif %}">${{ f.saldo }}</b></p>
+<small>{{ f.fecha|date:"d/m/Y" }}{% if f.vencimiento %} · vence {{ f.vencimiento|date:"d/m/Y" }}{% endif %}{% if f.descripcion %} · {{ f.descripcion }}{% endif %}</small></div>
+{% empty %}<p class="muted centro">No hay fiados registrados.</p>{% endfor %}{% endblock %}

@@ -1,0 +1,16 @@
+CUENTAFÁCIL - ETAPA 3 (proyecto completo)
+
+PASOS (Windows). Abrir en VS Code la carpeta que contiene manage.py (CuentaFacil_Django_Etapa3):
+1. python -m venv .venv
+2. .\.venv\Scripts\Activate.ps1
+3. python -m pip install -r requirements.txt
+4. python manage.py migrate
+5. python manage.py runserver 0.0.0.0:8000
+6. En la PC:      http://127.0.0.1:8000/registro/
+   En el celular: http://IP-DE-TU-PC:8000   (IP con:  ipconfig | findstr IPv4 ; misma red Wi-Fi)
+Pruebas automáticas: python manage.py test   (deben pasar 30)
+
+LOGO: core/static/core/ (logo-header.png, logo-banner.png, icono.png). El botón flotante 🤖 abre el asistente desde cualquier pantalla.
+INCLUYE: Etapa 2 (correo, PIN, fiados) + transferencias, gastos con categoría, ventas del día y cierre de caja,
+reportes día/semana/mes. PENDIENTE: Etapa 4 (asistente de texto y voz).
+SEGURIDAD: DEBUG activo, SECRET_KEY de ejemplo y ALLOWED_HOSTS=['*']: solo para uso local/clase.

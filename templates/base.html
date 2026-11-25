@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+{% load static %}<html lang="es"><head>
+<link rel="icon" type="image/png" href="{% static 'core/icono.png' %}"><link rel="apple-touch-icon" href="{% static 'core/icono.png' %}"><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#07583F"><title>CuentaFácil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+
+
+<style>
+:root{--verde:#07583F;--claro:#20A45C;--amarillo:#FFCE00;--texto:#16372c;--gris:#6b7c74;--borde:#e1eae4;--suave:#EAF6EE;--rojo:#D32F2F;--rojosuave:#FDE8E8}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:#eef3f0;font-family:Inter,system-ui,Arial,sans-serif;color:var(--texto)}
+.app{max-width:520px;margin:0 auto;min-height:100vh;background:#fff;position:relative;padding-bottom:96px;box-shadow:0 0 30px #0001}
+h1,h2,h3,.marca{font-family:Poppins,Inter,Arial,sans-serif}
+a{color:var(--verde)}
+.ic{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.logo{width:28px;height:28px}.logo-img{height:32px;width:auto;display:block}
+/* cabecera */
+.top{background:var(--verde);color:#fff;padding:calc(12px + env(safe-area-inset-top)) 14px 0;position:relative}
+.top .fila-top{display:flex;align-items:center;justify-content:space-between;min-height:44px}
+.top .izq,.top .der{width:44px;display:flex}.top .der{justify-content:flex-end}
+.marca{display:flex;align-items:center;gap:8px;color:#fff;text-decoration:none;font-weight:700;font-size:20px}
+.icb{background:none;border:0;color:#fff;width:42px;height:42px;display:flex;align-items:center;justify-content:center;border-radius:12px;position:relative;cursor:pointer;text-decoration:none}
+.punto{position:absolute;top:4px;right:3px;background:var(--amarillo);color:var(--texto);font:700 10px Inter;min-width:16px;height:16px;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 3px}
+.ola{display:block;width:calc(100% + 28px);margin:6px -14px -1px;height:34px}
+.menu{background:var(--verde);padding:0 14px 12px;margin:0}.menu[hidden]{display:none}
+.menu a,.menu button{display:flex;align-items:center;gap:12px;color:#fff;text-decoration:none;padding:11px 8px;border:0;background:none;width:100%;font:500 15px Inter;border-radius:10px;cursor:pointer}
+.menu a:hover,.menu button:hover{background:#ffffff1a}
+.pag{padding:4px 18px 8px}
+/* títulos y textos */
+.titulo{margin:6px 0 14px}.titulo h1{margin:0;font-size:24px;font-weight:700;color:var(--verde);line-height:1.2}.titulo p{margin:4px 0 0;color:var(--gris);font-size:14px}
+.centro{text-align:center}.muted,small{color:var(--gris)}
+/* botones */
+.btn{background:var(--amarillo);color:var(--texto);border:0;border-radius:14px;padding:0 18px;min-height:50px;font:600 16px Inter;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer}
+.btn.sec{background:#fff;border:2px solid var(--verde);color:var(--verde)}.btn.full{width:100%}.btn.chico{min-height:40px;font-size:14px;padding:0 14px;border-radius:12px}
+.btn.verde{background:var(--claro);color:#fff}
+.enlace{background:none;border:0;color:var(--verde);font:600 14px Inter;cursor:pointer;text-decoration:none}
+/* formularios */
+.campo{margin:0 0 14px}.campo>label{display:block;font-weight:600;font-size:14px;margin-bottom:6px}
+.inp{position:relative}.inp .ic{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#7a8c83;width:20px;height:20px;pointer-events:none}
+input:not([type=checkbox]):not([type=hidden]),select,textarea{width:100%;height:50px;padding:0 14px;border:1px solid #d8e3dc;border-radius:12px;font:16px Inter;background:#fff;color:var(--texto);outline:none}
+input:focus,select:focus{border-color:var(--claro);box-shadow:0 0 0 3px #20a45c26}
+.inp.con input,.inp.con select{padding-left:46px}
+.eye{position:absolute;right:6px;top:4px;width:42px;height:42px;border:0;background:none;color:#7a8c83;cursor:pointer;display:flex;align-items:center;justify-content:center}.eye .ic{position:static;transform:none}
+.err{color:var(--rojo);font-size:13px;margin-top:5px}.err.caja{background:var(--rojosuave);padding:10px 12px;border-radius:10px;margin:0 0 12px}
+.check{display:flex;align-items:center;gap:8px;font-size:14px;margin:4px 0 14px}.check input{width:18px;height:18px;accent-color:var(--claro)}
+.sep{display:flex;align-items:center;gap:12px;color:var(--gris);margin:14px 0;font-size:13px}.sep:before,.sep:after{content:"";flex:1;height:1px;background:var(--borde)}
+details{margin:0 0 14px}summary{cursor:pointer;color:var(--verde);font-weight:600;font-size:14px;padding:6px 0}
+/* tarjetas */
+.card{background:#fff;border:1px solid var(--borde);border-radius:18px;padding:16px;margin:0 0 12px;box-shadow:0 4px 14px #07583f0f}
+.suave{background:var(--suave);border-color:#cfe9d8;box-shadow:none}
+.fila{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.hero{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(135deg,#07583F,#0a6b4c);color:#fff;border-radius:18px;padding:18px;margin:6px 0 12px;text-decoration:none}
+.hero small{color:#cfe6dc;font-size:14px}.hero b{display:block;font:700 34px Poppins,Inter}
+.barritas{display:flex;align-items:flex-end;gap:5px;height:48px}.barritas i{width:8px;background:var(--amarillo);border-radius:3px}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.kpi{background:#fff;border:1px solid var(--borde);border-radius:16px;padding:14px;text-decoration:none;color:var(--texto);box-shadow:0 4px 14px #07583f0f}
+.kpi .t{display:flex;align-items:center;gap:8px;color:var(--gris);font-size:13px;font-weight:500}.kpi .t .ic{color:var(--verde);width:20px;height:20px}
+.kpi b{display:block;font:700 22px Poppins,Inter;margin-top:6px}
+.v-rojo{color:var(--rojo)}.v-verde{color:var(--claro)}.v-osc{color:var(--verde)}
+.asist{display:flex;align-items:center;gap:14px;background:var(--amarillo);border-radius:18px;padding:14px 16px;text-decoration:none;color:var(--texto);margin-bottom:12px}
+.asist .bot{width:52px;height:52px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:28px;flex:none}
+.asist b{font:600 16px Poppins}.asist small{color:#4a4000;display:block}
+.seg{display:flex;background:#eef3f0;border-radius:30px;padding:4px;margin:0 0 14px}.seg a{flex:1;text-align:center;padding:10px;border-radius:26px;text-decoration:none;color:var(--gris);font-weight:600;font-size:14px}.seg a.on{background:var(--verde);color:#fff}
+.chips{display:flex;gap:8px;overflow-x:auto;margin:0 0 12px;padding-bottom:2px}.chips a,.chips button{white-space:nowrap;border:1px solid #cfe0d5;background:#fff;color:var(--verde);border-radius:20px;padding:8px 14px;font:600 13px Inter;text-decoration:none;cursor:pointer}.chips a.on{background:var(--verde);color:#fff;border-color:var(--verde)}
+.item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--borde);text-decoration:none;color:inherit}.item:last-child{border:0}
+.circ{width:42px;height:42px;border-radius:50%;background:var(--suave);color:var(--verde);display:flex;align-items:center;justify-content:center;flex:none;font:600 14px Inter}
+.circ.rojo{background:var(--rojosuave);color:var(--rojo)}
+.item .tx{flex:1;min-width:0}.item .tx b{display:block;font-size:15px}.item .tx small{font-size:12px}
+.monto{font:700 15px Poppins,Inter;white-space:nowrap}
+.pm{font:700 14px Poppins,Inter;padding:6px 12px;border-radius:10px;background:var(--rojosuave);color:var(--rojo)}.pm.ok{background:#e1f5e8;color:var(--claro)}
+.tag{font-size:12px;padding:3px 10px;border-radius:20px;background:#e1f5e8;color:var(--verde);font-weight:600}.tag.mal{background:var(--rojosuave);color:var(--rojo)}
+.msg{background:#e1f5e8;border-left:5px solid var(--claro);padding:11px 14px;border-radius:12px;margin:8px 0 12px;font-size:14px}.msg.error{background:var(--rojosuave);border-color:var(--rojo)}
+.aviso{background:#fff8d6;border-left:5px solid var(--amarillo);padding:10px 14px;border-radius:12px;margin:0 0 12px;font-size:13px}
+.barras,.etiq{display:flex;justify-content:center;gap:6px}.barras{align-items:flex-end;height:140px;margin:10px 0 4px;border-bottom:2px solid #dbe6df}
+.barra{flex:1;min-width:0;max-width:56px;height:100%;display:flex;align-items:flex-end}.barra i{display:block;width:100%;background:var(--claro);border-radius:6px 6px 0 0}
+.etiq .barra{height:auto;display:block;text-align:center;font-size:10px;line-height:1.3;color:var(--gris)}
+.dobles{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:6px 0 4px}
+.dobles a{background:var(--suave);border:1px solid #cfe9d8;border-radius:14px;padding:14px;display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--verde);font-weight:600;font-size:14px}
+/* chat */
+.chat{display:flex;flex-direction:column;gap:12px;margin:8px 0 12px}
+.fila-bot{display:flex;gap:8px;align-items:flex-end}.av-bot{width:34px;height:34px;border-radius:50%;background:#e3efff;display:flex;align-items:center;justify-content:center;font-size:18px;flex:none}
+.burbuja{max-width:82%;padding:11px 14px;border-radius:16px;line-height:1.45;word-wrap:break-word;font-size:15px}
+.burbuja.a{background:#eef2f0;border-bottom-left-radius:4px}.burbuja.u{background:var(--claro);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.entrada{position:sticky;bottom:84px;display:flex;gap:8px;background:#fff;padding:10px 0;align-items:center}.entrada input{flex:1;border-radius:26px}
+.rnd{border:0;border-radius:50%;width:48px;height:48px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none}
+.mic{background:var(--amarillo);color:var(--texto)}.enviar{background:var(--claro);color:#fff}.mic.grabando{background:var(--rojo);color:#fff}
+/* navegación inferior */
+.fab{position:fixed;bottom:96px;right:max(16px,calc(50vw - 244px));background:var(--amarillo);width:58px;height:58px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;box-shadow:0 4px 14px #0004;text-decoration:none;z-index:25;border:3px solid #fff}
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:520px;background:#fff;display:flex;justify-content:space-around;padding:8px 6px calc(10px + env(safe-area-inset-bottom));box-shadow:0 -4px 16px #0000001a;border-radius:20px 20px 0 0;z-index:20}
+.nav a{display:flex;flex-direction:column;align-items:center;gap:3px;text-decoration:none;color:var(--verde);font-size:12px;font-weight:500;flex:1}
+.nav .pill{width:48px;height:34px;border-radius:12px;display:flex;align-items:center;justify-content:center}.nav a.on .pill{background:var(--amarillo)}.nav a.on{font-weight:700}
+/* PIN */
+.escudo{width:64px;height:64px;border-radius:50%;background:var(--claro);color:#fff;display:flex;align-items:center;justify-content:center;margin:10px auto 12px}.escudo .ic{width:32px;height:32px}
+.puntos{display:flex;justify-content:center;gap:14px;margin:18px 0}.puntos i{width:18px;height:18px;border-radius:50%;border:2px solid #b8c9bf}.puntos i.on{background:var(--claro);border-color:var(--claro)}
+.teclado{display:grid;grid-template-columns:repeat(3,72px);gap:14px;justify-content:center;margin:16px 0}
+.teclado button{height:64px;width:72px;border-radius:50%;border:0;background:#eef3f0;font:600 24px Poppins;color:var(--texto);cursor:pointer}.teclado button:active{background:#d9e8df}
+.teclado .vacio{visibility:hidden}.teclado .borrar{background:none}
+@media(max-width:360px){.teclado{grid-template-columns:repeat(3,64px);gap:10px}.teclado button{width:64px;height:58px}}
+/* Indicador de carga */
+#pantalla-carga {
+    position: fixed;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.90);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#pantalla-carga[hidden] {
+    display: none;
+}
+
+.caja-carga {
+    text-align: center;
+    padding: 30px;
+}
+
+.caja-carga h3 {
+    color: #07583F;
+    margin: 15px 0 8px;
+}
+
+.caja-carga p {
+    color: #6b7c74;
+    font-size: 14px;
+}
+
+.circulo-carga {
+    width: 55px;
+    height: 55px;
+    border: 5px solid #EAF6EE;
+    border-top-color: #07583F;
+    border-right-color: #FFCE00;
+    border-radius: 50%;
+    margin: auto;
+    animation: girar-carga 0.8s linear infinite;
+}
+
+@keyframes girar-carga {
+    to {
+        transform: rotate(360deg);
+    }
+}
+</style></head><body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-home" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+<symbol id="i-repeat" viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></symbol>
+<symbol id="i-mail" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></symbol>
+<symbol id="i-menu" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></symbol>
+<symbol id="i-back" viewBox="0 0 24 24"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+<symbol id="i-store" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></symbol>
+<symbol id="i-dollar" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></symbol>
+<symbol id="i-card" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></symbol>
+<symbol id="i-mic" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></symbol>
+<symbol id="i-send" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></symbol>
+<symbol id="i-cal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></symbol>
+<symbol id="i-userplus" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+<symbol id="i-pin" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+<symbol id="i-tag" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></symbol>
+<symbol id="i-zap" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
+<symbol id="i-truck" viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></symbol>
+<symbol id="i-box" viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></symbol>
+<symbol id="i-cart" viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 1.99-1.61L23 6H6"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+<symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></symbol>
+<symbol id="i-del" viewBox="0 0 24 24"><path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/><line x1="18" y1="9" x2="12" y2="15"/><line x1="12" y1="9" x2="18" y2="15"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><rect x="9" y="10" width="6" height="5" rx="1"/><path d="M10 10V8.5a2 2 0 0 1 4 0V10"/></symbol>
+</defs></svg>
+<div id="pantalla-carga" hidden role="status">
+    <div class="caja-carga">
+        <div class="circulo-carga"></div>
+        <h3>CuentaFácil</h3>
+        <p id="texto-carga">Cargando...</p>
+        <small>Un momento, por favor.</small>
+    </div>
+</div>
+<div class="app">
+{% block cabecera %}<header class="top"><div class="fila-top">
+<div class="izq">{% block izq %}{% if user.is_authenticated and user.tienda %}<button class="icb" id="btnmenu" type="button" aria-label="Menú"><svg class="ic"><use href="#i-menu"/></svg></button>{% endif %}{% endblock %}</div>
+<a class="marca" href="{% url 'inicio' %}"><img src="{% static 'core/logo-header.png' %}" alt="CuentaFácil" class="logo-img"></a>
+<div class="der">{% block der %}{% if user.is_authenticated and user.tienda %}<a class="icb" href="{% url 'deudas' %}" aria-label="Fiados vencidos"><svg class="ic"><use href="#i-bell"/></svg>{% if vencidos %}<span class="punto">{{ vencidos }}</span>{% endif %}</a>{% endif %}{% endblock %}</div></div>
+<svg class="ola" viewBox="0 0 400 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 24 C90 0 240 44 400 8 L400 40 L0 40Z" fill="#FFCE00"/><path d="M0 32 C90 8 240 52 400 16 L400 40 L0 40Z" fill="#fff"/></svg></header>
+{% block menu %}{% if user.is_authenticated and user.tienda %}<nav class="menu" id="menu" hidden>
+<a href="{% url 'inicio' %}"><svg class="ic"><use href="#i-home"/></svg>Inicio</a><a href="{% url 'clientes' %}"><svg class="ic"><use href="#i-users"/></svg>Clientes</a>
+<a href="{% url 'deudas' %}"><svg class="ic"><use href="#i-file"/></svg>Fiados</a><a href="{% url 'movimientos' %}"><svg class="ic"><use href="#i-repeat"/></svg>Movimientos</a>
+<a href="{% url 'ventas_dia' %}"><svg class="ic"><use href="#i-cart"/></svg>Ventas y cierre de caja</a><a href="{% url 'reportes' %}"><svg class="ic"><use href="#i-chart"/></svg>Reportes</a>
+<a href="{% url 'asistente' %}"><svg class="ic"><use href="#i-mic"/></svg>Asistente inteligente</a><a href="{% url 'pin_config' %}"><svg class="ic"><use href="#i-lock"/></svg>Cambiar PIN</a>
+<form method="post" action="{% url 'logout' %}">{% csrf_token %}<button><svg class="ic"><use href="#i-logout"/></svg>Cerrar sesión</button></form></nav>{% endif %}{% endblock %}{% endblock %}
+<main class="pag">{% for m in messages %}<div class="msg {{ m.tags }}">{{ m }}</div>{% endfor %}{% block content %}{% endblock %}</main>
+{% block nav %}{% if user.is_authenticated and user.tienda %}<nav class="nav">{% url 'inicio' as u1 %}{% url 'clientes' as u2 %}{% url 'movimientos' as u3 %}{% url 'reportes' as u4 %}
+<a href="{{ u1 }}" class="{% if request.path == u1 %}on{% endif %}"><span class="pill"><svg class="ic"><use href="#i-home"/></svg></span>Inicio</a>
+<a href="{{ u2 }}" class="{% if '/clientes' in request.path or '/deudas' in request.path %}on{% endif %}"><span class="pill"><svg class="ic"><use href="#i-users"/></svg></span>Clientes</a>
+<a href="{{ u3 }}" class="{% if request.path == u3 %}on{% endif %}"><span class="pill"><svg class="ic"><use href="#i-repeat"/></svg></span>Movimientos</a>
+<a href="{{ u4 }}" class="{% if request.path == u4 %}on{% endif %}"><span class="pill"><svg class="ic"><use href="#i-chart"/></svg></span>Reportes</a></nav>{% url 'asistente' as ua %}{% if request.path != ua %}<a class="fab" href="{{ ua }}" title="Asistente inteligente" aria-label="Asistente inteligente">🤖</a>{% endif %}{% endif %}{% endblock %}
+</div>
+<script>
+var bm=document.getElementById('btnmenu'),mn=document.getElementById('menu');if(bm&&mn)bm.onclick=function(){mn.hidden=!mn.hidden};
+document.querySelectorAll('input[type=password]').forEach(function(i){if(i.dataset.sinojo)return;var w=i.closest('.inp');if(!w)return;var b=document.createElement('button');b.type='button';b.className='eye';b.setAttribute('aria-label','Mostrar contraseña');
+b.innerHTML='<svg class="ic"><use href="#i-eye"/></svg>';b.onclick=function(){i.type=i.type==='password'?'text':'password'};w.appendChild(b);i.style.paddingRight='48px'});
+/* Indicador de carga entre módulos */
+
+const pantallaCarga = document.getElementById('pantalla-carga');
+const textoCarga = document.getElementById('texto-carga');
+
+let temporizadorCarga;
+
+function mostrarCarga(mensaje = 'Cargando...') {
+    clearTimeout(temporizadorCarga);
+
+    temporizadorCarga = setTimeout(function () {
+        textoCarga.textContent = mensaje;
+        pantallaCarga.hidden = false;
+    }, 200);
+}
+
+document.querySelectorAll('.nav a, .menu a, .fab')
+    .forEach(function (enlace) {
+
+        enlace.addEventListener('click', function (e) {
+
+            if (e.ctrlKey || e.metaKey || e.shiftKey ||
+                e.altKey || e.defaultPrevented) {
+                return;
+            }
+
+            if (enlace.href !== window.location.href) {
+                mostrarCarga('Cargando módulo...');
+            }
+        });
+    });
+
+window.addEventListener('pageshow', function () {
+    clearTimeout(temporizadorCarga);
+    pantallaCarga.hidden = true;
+});
+</script></body></html>

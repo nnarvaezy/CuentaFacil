@@ -1,0 +1,3 @@
+{% extends 'base.html' %}{% block content %}<div class="centro" style="margin-top:30px">
+<div class="escudo"><svg class="ic"><use href="#i-check"/></svg></div><h1 style="color:var(--verde)">{{ titulo }}</h1><p class="muted">{{ mensaje }}</p>
+<a class="btn full" href="{% url 'login' %}">Ir a iniciar sesión</a></div>{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}{% block content %}
+<div class="titulo centro"><h1>Iniciar sesión</h1><p>Ingresa a tu cuenta para administrar tu negocio.</p></div>
+<form method="post">{% csrf_token %}
+{% if form.non_field_errors %}<div class="err caja">{{ form.non_field_errors.0 }}</div>{% endif %}
+<div class="campo"><div class="inp con"><svg class="ic"><use href="#i-mail"/></svg>{{ form.username }}</div>{% for e in form.username.errors %}<div class="err">{{ e }}</div>{% endfor %}</div>
+<div class="campo"><div class="inp con"><svg class="ic"><use href="#i-lock"/></svg>{{ form.password }}</div>{% for e in form.password.errors %}<div class="err">{{ e }}</div>{% endfor %}</div>
+<label class="check">{{ form.recordarme }} Recordarme</label>
+<button class="btn full">Ingresar</button></form>
+<p class="centro"><a class="enlace" href="{% url 'recuperar' %}">¿Olvidaste tu contraseña?</a></p>
+<div class="sep">o</div>
+<a class="btn sec full" href="{% url 'registro' %}"><svg class="ic"><use href="#i-userplus"/></svg>Crear cuenta</a>{% endblock %}

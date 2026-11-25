@@ -1,0 +1,426 @@
+
+{% extends 'base.html' %}
+{% load static %}
+
+{% block cabecera %}{% endblock %}
+{% block nav %}{% endblock %}
+
+{% block content %}
+
+<style>
+    html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100%;
+        background: #FFFFFF !important;
+        overflow-x: hidden;
+    }
+
+    .bienvenida {
+        width: 100vw;
+        max-width: none;
+        margin-left: calc(50% - 50vw);
+        min-height: 100dvh;
+        background: #FFFFFF;
+        font-family: Poppins, sans-serif;
+        text-align: center;
+        overflow: hidden;
+    }
+
+    .bienvenida * {
+        box-sizing: border-box;
+    }
+
+    /* CABECERA PRINCIPAL */
+
+    .cabecera-bienvenida {
+        position: relative;
+        background: linear-gradient(
+            145deg, #043D2D, #07583F, #087653
+        );
+        padding: 32px 20px 45px;
+        overflow: hidden;
+    }
+
+    .circulo-decorativo {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.06);
+        pointer-events: none;
+    }
+
+    .circulo-uno {
+        width: 220px;
+        height: 220px;
+        top: -100px;
+        right: -65px;
+    }
+
+    .circulo-dos {
+        width: 150px;
+        height: 150px;
+        bottom: -40px;
+        left: -60px;
+    }
+
+    /* LOGO */
+
+    .marca-bienvenida {
+        position: relative;
+        z-index: 1;
+        animation: aparecer 0.7s ease both;
+    }
+
+    .logo-icono {
+        width: 76px;
+        height: 76px;
+        margin: 0 auto 14px;
+        background: linear-gradient(
+            145deg, #FFDF35, #FFCE00
+        );
+        border-radius: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 6px 0 #DCA900,
+                    0 12px 24px #00000025;
+    }
+
+    .nombre-app {
+        color: #FFFFFF;
+        font-size: clamp(30px, 8vw, 40px);
+        font-weight: 800;
+        letter-spacing: -1px;
+        margin: 10px 0 5px;
+    }
+
+    .subtitulo-marca {
+        color: #FFDF55;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 1.8px;
+        margin: 0;
+    }
+
+    /* ONDA DECORATIVA */
+
+    .onda-inferior {
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 100%;
+        height: 40px;
+        display: block;
+    }
+
+    /* CONTENIDO PRINCIPAL */
+
+    .contenido-bienvenida {
+        width: 100%;
+        max-width: 460px;
+        margin: 0 auto;
+        padding: 12px 25px 30px;
+    }
+
+    /* ILUSTRACIÓN */
+
+    .contenedor-tienda {
+        position: relative;
+        width: 100%;
+        max-width: 350px;
+        margin: 0 auto 5px;
+        overflow: hidden;
+        background: #FFFFFF;
+        animation: aparecer 0.8s ease 0.15s both;
+    }
+
+    .imagen-tienda {
+        display: block;
+        width: 100%;
+        height: auto;
+        margin: 0;
+        border: none;
+        box-shadow: none;
+        mix-blend-mode: multiply;
+        clip-path: inset(0 0 8% 0);
+    }
+
+    /* ESLOGAN */
+
+    .texto-bienvenida {
+        animation: aparecer 0.8s ease 0.3s both;
+    }
+
+    .eslogan {
+        color: #064C38;
+        font-size: clamp(23px, 6vw, 30px);
+        font-weight: 800;
+        line-height: 1.25;
+        letter-spacing: -0.7px;
+        margin: 0 0 14px;
+    }
+
+    .eslogan span {
+        color: #15905D;
+    }
+
+    .descripcion {
+        color: #687B72;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1.7;
+        max-width: 340px;
+        margin: 0 auto 24px;
+    }
+
+    /* BOTÓN COMENZAR */
+
+    .boton-comenzar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        width: 100%;
+        padding: 17px 20px;
+        background: linear-gradient(
+            135deg, #FFDA25, #FFCE00
+        );
+        color: #064C38;
+        border-radius: 18px;
+        text-decoration: none;
+        font-size: 18px;
+        font-weight: 700;
+        box-shadow: 0 7px 18px #FFCE0040;
+        transition: transform 0.2s,
+                    box-shadow 0.2s;
+        animation: aparecer 0.8s ease 0.45s both;
+    }
+
+    .boton-comenzar:hover {
+        color: #064C38;
+        box-shadow: 0 9px 22px #FFCE0060;
+    }
+
+    .boton-comenzar:active {
+        transform: scale(0.97);
+    }
+
+    .boton-comenzar:focus-visible {
+        outline: 3px solid #07583F;
+        outline-offset: 4px;
+    }
+
+    .flecha-boton {
+        width: 23px;
+        height: 23px;
+    }
+
+    /* MENSAJE INFERIOR */
+
+    .mensaje-final {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        color: #687B72;
+        font-size: 11px;
+        margin: 22px 0 0;
+        animation: aparecer 0.8s ease 0.6s both;
+    }
+
+    .icono-seguridad {
+        width: 17px;
+        height: 17px;
+        color: #07583F;
+        flex-shrink: 0;
+    }
+
+    /* ANIMACIONES */
+
+    @keyframes aparecer {
+        from {
+            opacity: 0;
+            transform: translateY(12px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* ADAPTACIÓN A CELULARES PEQUEÑOS */
+
+    @media (max-width: 360px) {
+        .cabecera-bienvenida {
+            padding: 24px 15px 40px;
+        }
+
+        .logo-icono {
+            width: 62px;
+            height: 62px;
+        }
+
+        .contenido-bienvenida {
+            padding: 8px 20px 20px;
+        }
+
+        .descripcion {
+            font-size: 13px;
+            margin-bottom: 18px;
+        }
+
+        .contenedor-tienda {
+            max-width: 290px;
+        }
+    }
+
+    /* ACCESIBILIDAD */
+
+    @media (prefers-reduced-motion: reduce) {
+        .bienvenida *,
+        .bienvenida *::before,
+        .bienvenida *::after {
+            animation: none !important;
+            transition: none !important;
+        }
+    }
+</style>
+
+<div class="bienvenida">
+
+    <!-- CABECERA -->
+
+    <header class="cabecera-bienvenida">
+
+        <div class="circulo-decorativo circulo-uno"></div>
+        <div class="circulo-decorativo circulo-dos"></div>
+
+        <div class="marca-bienvenida">
+
+            <div class="logo-icono">
+
+                <svg width="46" height="46"
+                     viewBox="0 0 48 48"
+                     fill="none"
+                     stroke="white"
+                     stroke-width="3"
+                     stroke-linejoin="round"
+                     aria-hidden="true">
+
+                    <path d="M24 4L42 14V34L24 44
+                             L6 34V14Z"/>
+
+                    <path d="M6 14L24 24L42 14
+                             M24 24V44"/>
+
+                </svg>
+
+            </div>
+
+            <h1 class="nombre-app">
+                CuentaFácil
+            </h1>
+
+            <p class="subtitulo-marca">
+                TU NEGOCIO EN BUENAS MANOS
+            </p>
+
+        </div>
+
+        <!-- Ondas amarilla y blanca -->
+
+        <svg class="onda-inferior"
+             viewBox="0 0 400 50"
+             preserveAspectRatio="none"
+             aria-hidden="true">
+
+            <path d="M0 8Q180 65 400 0V50H0Z"
+                  fill="#FFCE00"/>
+
+            <path d="M0 20Q180 75 400 12V50H0Z"
+                  fill="#FFFFFF"/>
+
+        </svg>
+
+    </header>
+
+    <!-- CONTENIDO -->
+
+    <div class="contenido-bienvenida">
+
+        <div class="contenedor-tienda">
+
+            <img
+                src="{% static 'core/tienda-bienvenida.png' %}"
+                class="imagen-tienda"
+                alt="Tendero atendiendo su tienda"
+            >
+
+        </div>
+
+        <div class="texto-bienvenida">
+
+            <h2 class="eslogan">
+                Tu negocio claro,<br>
+                <span>tus cuentas fáciles.</span>
+            </h2>
+
+            <p class="descripcion">
+                Organiza tus ventas, controla tus fiados
+                y toma mejores decisiones con
+                inteligencia artificial.
+            </p>
+
+        </div>
+
+        <!-- BOTÓN FUNCIONAL -->
+
+        <a href="{% url 'login' %}"
+           class="boton-comenzar">
+
+            Comenzar
+
+            <svg class="flecha-boton"
+                 viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="2.5"
+                 stroke-linecap="round"
+                 stroke-linejoin="round"
+                 aria-hidden="true">
+
+                <path d="M4 12h15M12 5l7 7-7 7"/>
+
+            </svg>
+
+        </a>
+
+        <!-- MENSAJE INFERIOR -->
+
+        <p class="mensaje-final">
+
+            <svg class="icono-seguridad"
+                 viewBox="0 0 24 24"
+                 fill="none"
+                 stroke="currentColor"
+                 stroke-width="2"
+                 stroke-linecap="round"
+                 stroke-linejoin="round"
+                 aria-hidden="true">
+
+                <path d="M12 22s8-4 8-11V5l-8-3-8 3v6c0 7 8 11 8 11z"/>
+
+                <path d="m9 12 2 2 4-4"/>
+
+            </svg>
+
+            Accede a las cuentas de tu negocio.
+
+        </p>
+
+    </div>
+
+</div>
+
+{% endblock %}

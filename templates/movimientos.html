@@ -1,0 +1,13 @@
+{% extends 'base.html' %}{% load ui %}{% block content %}
+<div class="titulo"><h1>{% if tab == 'gastos' %}Gastos{% else %}Transferencias{% endif %}</h1><p>{% if tab == 'gastos' %}Registra y consulta los gastos de tu tienda.{% else %}Consulta los ingresos recibidos por transferencias.{% endif %}</p></div>
+<div class="seg"><a href="?t=transferencias" class="{% if tab == 'transferencias' %}on{% endif %}">Transferencias</a><a href="?t=gastos" class="{% if tab == 'gastos' %}on{% endif %}">Gastos</a></div>
+{% if tab == 'transferencias' %}<div class="aviso">ℹ️ {{ aviso }}</div>{% endif %}
+<div class="card suave fila" style="justify-content:flex-start;gap:14px"><span class="circ" style="background:#fff;width:48px;height:48px"><svg class="ic"><use href="#i-{% if tab == 'gastos' %}card{% else %}repeat{% endif %}"/></svg></span>
+<div><small>{% if tab == 'gastos' %}Total de gastos este mes{% else %}Total recibido este mes{% endif %}</small><b style="display:block;font:700 26px Poppins">${{ total }}</b></div></div>
+{% if tab == 'gastos' %}<a class="btn full" href="{% url 'nuevo' 'gasto' %}">Registrar gasto</a>{% else %}<a class="btn full" href="{% url 'nuevo' 'transferencia' %}">Registrar transferencia</a>{% endif %}
+<h3 style="margin:18px 0 4px">Historial de {% if tab == 'gastos' %}gastos{% else %}transferencias{% endif %}</h3>
+<div class="card" style="padding:4px 14px">{% for x in items %}<div class="item"><span class="circ {% if tab == 'gastos' %}rojo{% endif %}"><svg class="ic"><use href="#i-{% if tab == 'gastos' %}{{ x.categoria|ic_gasto }}{% elif x.tipo == 'venta' %}cart{% else %}dollar{% endif %}"/></svg></span>
+<div class="tx"><b>{% if tab == 'gastos' %}{{ x.get_categoria_display }}{% else %}{{ x.concepto }}{% endif %}</b><small>{% if tab == 'gastos' %}{% if x.descripcion %}{{ x.descripcion }} · {% endif %}{% else %}{{ x.get_tipo_display }} · {% endif %}{{ x.fecha|date:"d/m/Y" }}{% if x.editado %} · editado{% endif %}</small></div>
+<div style="text-align:right"><span class="monto {% if tab == 'gastos' %}v-rojo{% else %}v-verde{% endif %}">${{ x.monto }}</span><br>
+{% if x.fecha in cerrados %}<small>🔒 cerrado</small>{% elif tab == 'gastos' %}<a class="enlace" style="font-size:12px" href="{% url 'editar' 'gasto' x.pk %}">Corregir</a>{% elif x.tipo == 'venta' %}<a class="enlace" style="font-size:12px" href="{% url 'editar' 'transferencia' x.pk %}">Corregir</a>{% endif %}</div></div>
+{% empty %}<p class="muted centro">Aún no hay registros.</p>{% endfor %}</div>{% endblock %}

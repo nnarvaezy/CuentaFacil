@@ -1,0 +1,28 @@
+{% extends 'base.html' %}{% block izq %}{% url 'inicio' as u %}{% include 'atras.html' with url=u %}{% endblock %}
+{% block content %}<div class="titulo"><h1>Asistente inteligente</h1><p>Tu aliado para gestionar tu tienda.</p></div>
+<div class="chat" id="chat">
+<div class="fila-bot"><span class="av-bot">🤖</span><div class="burbuja a">¡Hola! Soy el asistente de CuentaFácil. ¿En qué puedo ayudarte hoy?<br><small>Escribe «ayuda» para ver ejemplos. Respondo siempre por escrito.</small></div></div>
+{% for x in chat %}{% if x.rol == 'a' %}<div class="fila-bot"><span class="av-bot">🤖</span><div class="burbuja a">{{ x.texto|linebreaksbr }}
+{% if x.enlace %}<p><a class="btn sec chico" href="{{ x.enlace.0 }}">{{ x.enlace.1 }}</a></p>{% endif %}
+{% if forloop.last and pendiente %}<form method="post" style="display:flex;gap:8px;margin-top:10px">{% csrf_token %}<button class="btn chico verde" name="accion" value="confirmar">✓ Confirmar</button><button class="btn chico sec" name="accion" value="cancelar">✕ Cancelar</button></form>{% endif %}</div></div>
+{% else %}<div class="burbuja u">{{ x.texto }}</div>{% endif %}{% endfor %}</div>
+<div class="chips" style="flex-wrap:wrap">
+<form method="post">{% csrf_token %}<input type="hidden" name="texto" value="quién me debe"><button>Consultar deudas</button></form>
+<form method="post">{% csrf_token %}<input type="hidden" name="texto" value="ventas de hoy"><button>Ver ventas del día</button></form>
+<form method="post">{% csrf_token %}<input type="hidden" name="texto" value="gastos de hoy"><button>Gastos de hoy</button></form></div>
+<form method="post" class="entrada" id="f">{% csrf_token %}<button type="button" class="rnd mic" id="mic" title="Hablar"><svg class="ic"><use href="#i-mic"/></svg></button>
+<input name="texto" id="texto" placeholder="Escribe un mensaje..." maxlength="300" autocomplete="off"><button class="rnd enviar" title="Enviar"><svg class="ic"><use href="#i-send"/></svg></button></form>
+<small class="muted" id="nota"></small>
+<script>
+window.scrollTo(0, document.body.scrollHeight);
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition, mic = document.getElementById('mic');
+if (!SR || !window.isSecureContext) {  // el registro manual sigue funcionando sin voz (RNF-07)
+  mic.style.display = 'none';
+  document.getElementById('nota').textContent = 'La voz solo funciona en Chrome/Edge con https o en localhost; puedes escribir el mensaje.';
+} else {
+  const r = new SR(); r.lang = 'es-EC'; r.interimResults = false;
+  mic.onclick = () => { mic.classList.add('grabando'); r.start(); };
+  r.onresult = e => { document.getElementById('texto').value = e.results[0][0].transcript; document.getElementById('f').requestSubmit(); };
+  r.onend = r.onerror = () => mic.classList.remove('grabando');
+}
+</script>{% endblock %}

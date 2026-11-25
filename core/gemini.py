@@ -214,7 +214,7 @@ def analisis_respaldo(actual, anterior, variacion, deuda):
             "las ventas registradas."
         )
 
-    elif gastos >= ventas * 0.7:
+    elif gastos * 10 >= ventas * 7:
 
         recomendaciones.append(
             "Controla tus gastos y revisa cuáles puedes reducir."
